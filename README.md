@@ -167,13 +167,18 @@ print("\nPermutations: \n", a.perm_counts(), sep ="")
 
 ## API description
 NAME
-    montecarlo.montecarlo
+
+montecarlo.montecarlo
 
 CLASSES
-    builtins.object
-        Analyzer
-        Die
-        Game
+
+builtins.object:
+
+- Analyzer
+
+- Die
+
+- Game
 
 ### Analyzer
 
