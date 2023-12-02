@@ -17,6 +17,10 @@ After cloning this repo to your machine, navigate into rn7ena_DS5100_montecarlo 
 ```
 python setup.py install
 ```
+or
+```
+pip install .
+```
 
 The package is now available for your use in python.
 
