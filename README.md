@@ -181,21 +181,24 @@ An Analyzer object takes the results of a single game and computes various descr
 
 METHODS
 
-`__init__(self, game)
+`__init__(self, game)`
 
 __Purpose:__
-     Initializes Analyzer object with a given game.
 
-     **Inputs:**
-     game : Game object to be analyzed.
+Initializes Analyzer object with a given game.
+
+__Inputs:__
+
+game : Game object to be analyzed.
 
      **Outputs:**
      Analyzer object with the given Game.
 
      combo_counts(self)
 
-     **Purpose:**
-     Computes distinct combinations (regardless of order) of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a Multiindex with a single column of counts.
+__Purpose:__
+
+Computes distinct combinations (regardless of order) of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a Multiindex with a single column of counts.
 
      **Inputs:**
      None.
@@ -205,8 +208,9 @@ __Purpose:__
 
      face_counts(self)
 
-     **Purpose:**
-     Computes how many times each face is rolled for each roll in a game, returning a data frame describing the faces rolled in the Game.
+__Purpose:__
+
+Computes how many times each face is rolled for each roll in a game, returning a data frame describing the faces rolled in the Game.
 
      **Inputs:**
      None.
@@ -216,8 +220,9 @@ __Purpose:__
 
      get_game(self)
 
-     **Purpose:**
-     Safely retrieve a copy of the Game object that the Analyzer was initialized with.
+__Purpose:__
+
+Safely retrieve a copy of the Game object that the Analyzer was initialized with.
 
      **Inputs:**
      None.
@@ -227,8 +232,9 @@ __Purpose:__
 
      jackpot(self)
 
-     **Purpose:**
-     Computes the number of times all Die objects 'rolled' the same face in a single roll, returning an integer value.
+__Purpose:__
+
+Computes the number of times all Die objects 'rolled' the same face in a single roll, returning an integer value.
 
      **Inputs:**
      None.
@@ -238,8 +244,9 @@ __Purpose:__
 
      perm_counts(self)
 
-     **Purpose:**
-     Computes the distinct (ordered) permutations of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a multiindex with a single column of counts.
+__Purpose:__
+
+Computes the distinct (ordered) permutations of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a multiindex with a single column of counts.
      
      **Inputs:**
      None.
@@ -256,8 +263,9 @@ A Die object represents a stochastic object with a specified number of faces rep
 METHODS
      __init__(self, faces)
 
-     **Purpose:**
-     Initializes Die object with a specified number of sides (which can represent a coin (2 sides), an actual die (6 sides), etc.).
+__Purpose:__
+
+Initializes Die object with a specified number of sides (which can represent a coin (2 sides), an actual die (6 sides), etc.).
 
      **Inputs:**
      faces : numpy array with distinct values representing each face (e.g. array(["Heads", "Tails"]) for a coin.)
@@ -267,8 +275,9 @@ METHODS
 
      change_weight(self, face, new_weight)
 
-     **Purpose:**
-     Allows the user to change the weight of a given face to make the die "unfair".
+__Purpose:__
+
+Allows the user to change the weight of a given face to make the die "unfair".
 
      **Inputs:**
      face       : str or numeric representation of one of the faces
@@ -279,8 +288,9 @@ METHODS
 
      get_state(self)
 
-     **Purpose:**
-     Safely access the state object of the Die, which holds the names and weights of each face in a pandas data frame.
+__Purpose:__
+
+Safely access the state object of the Die, which holds the names and weights of each face in a pandas data frame.
 
      **Inputs:**
      None.
@@ -290,8 +300,9 @@ METHODS
 
      roll(self, times=1)
 
-     **Purpose:**
-     Simulates rolling the die a given number of times, returning a list of outcomes of the rolls.
+__Purpose:__
+
+Simulates rolling the die a given number of times, returning a list of outcomes of the rolls.
 
      **Inputs:**
      times : int number of rolls to be recorded
@@ -307,8 +318,9 @@ Game object takes one or more dice (of the Die class) with the same number and n
 METHODS
      __init__(self, dice)
 
-     **Purpose:**
-     Initializes a Game object with a given list of dice.
+__Purpose:__
+
+Initializes a Game object with a given list of dice.
 
      **Inputs:**
      dice : list of Die objects with the same number and labels of faces.
@@ -318,8 +330,9 @@ METHODS
 
      get_dice(self)
      
-     **Purpose:**
-     Safely retrieve list of Die objects stored in the Game.
+__Purpose:__
+
+Safely retrieve list of Die objects stored in the Game.
 
      **Inputs:**
      None.
@@ -329,8 +342,9 @@ METHODS
 
      get_last_play(self, format='wide')
 
-     **Purpose:**
-     Safely retrieve information on the last game played.
+__Purpose:__
+
+Safely retrieve information on the last game played.
      
      **Inputs:**
      format : string "wide" or "narrow" to desribe the shape of the dataframe returned. "wide" or "w" will return the dataframe with row indexes representing Roll # and columns representing Die #. "narrow" or "n" will return the dataframe multi-indexed with level 1 representing Roll # and level 2 representing Die #.
@@ -339,8 +353,10 @@ METHODS
      last_play : pandas dataframe with results from the last game, in wide or narrow format as specified. Defaults to wide.
 
 #### play(self, times=1)
-     **Purpose:**
-     Simulate gameplay by getting results of a given number of rolls of the dice in the Game. Results are returned and stored in the Game object, retrievable with the get_last_play() method. Only the most recent play is recorded; play history is lost.
+
+__Purpose:__
+
+Simulate gameplay by getting results of a given number of rolls of the dice in the Game. Results are returned and stored in the Game object, retrievable with the get_last_play() method. Only the most recent play is recorded; play history is lost.
 
      **Inputs:**
      times : int number of rolls in the game. Defaults to 1.
