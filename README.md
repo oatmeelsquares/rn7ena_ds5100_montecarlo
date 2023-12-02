@@ -84,15 +84,82 @@ print(game1.get_last_play())
 ## Output
 ## Die #   1  2  3
 ## Roll #
-## 1       H  T  H
-## 2       H  T  H
-## 3       H  H  H
+## 1       T  T  T
+## 2       T  T  H
+## 3       H  H  T
 ## 4       H  H  H
-## 5       H  H  H
+## 5       H  H  T
+
 ```
 
 Notice how there are many more heads than tails because we weighted the "H" face!
 
+If you find a need, you can also access the Die objects with the `get_dice` method, which will return a list of the Die objects that the Game was instantiated with.
+```
+for d in game1.get_dice():
+  print(d.get_state())
+
+## Output
+##       Weight
+## Face
+## H        2.0
+## T        1.0
+##       Weight
+## Face
+## H        2.0
+## T        1.0
+##       Weight
+## Face
+## H        2.0
+## T        1.0
+```
+
+
+#### Analyzer
+The Analyzer class has a few methods which will display some facts about a Game. An Analyzer object is initialized with a Game object as an argument, which can be accessed with the `get_game` method.
+```
+a = mc.Analyzer(game1)
+print(a.get_game().get_last_play())
+
+## Output
+## Die #   1  2  3
+## Roll #
+## 1       T  T  T
+## 2       T  T  H
+## 3       H  H  T
+## 4       H  H  H
+## 5       H  H  T
+
+```
+
+The Analyzer will tell you how many times you hit the jackpot (rolled all of the same faces in a single roll), how many times each face was rolled in each roll, and how many distinct combinations and permutations were rolled along with their counts.
+```
+print("Jackpots:", a.jackpot(), sep ="")
+print("Face counts: \n", a.face_counts(), sep ="")
+print("Combos: \n", a.combo_counts(), sep ="")
+print("Permutations: \n", a.perm_counts(), sep ="")
+
+## Output
+## Jackpots: 2
+## Face counts:
+##    T  H
+## 1  3  0
+## 2  2  1
+## 3  1  2
+## 4  0  3
+## 5  1  2
+## Combos:
+##        Counts
+## T T T       1
+## H T T       1
+##   H T       2
+##     H       1
+## Permutations:
+##        Counts
+## T T T       1
+##     H       1
+## H H T       2
+##     H       1
 
 
 
