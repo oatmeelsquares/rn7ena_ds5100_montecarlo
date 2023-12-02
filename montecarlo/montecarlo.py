@@ -66,7 +66,7 @@ class Die:
                      if no other faces were changed)
 
         Outputs:
-        None (in-place change of Die object's state attribute)
+        None (in-place change of Die object's state attribute).
         '''
 
         # raise IndexError if the face given is not part of the Die
@@ -86,7 +86,8 @@ class Die:
     def roll(self, times=1):
         '''
         Purpose:
-        Simulates rolling the die a given number of times, returning a list of outcomes of the rolls.
+        Simulates rolling the die a given number of times, returning a list of outcomes of the rolls without storing
+        the results.
 
         Inputs:
         times : int number of rolls to be recorded
