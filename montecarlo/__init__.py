@@ -1,1 +1,1 @@
-import montecarlo.montecarlo
+from montecarlo import montecarlo
