@@ -179,8 +179,7 @@ CLASSES
 
 An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
 
-     Methods defined here:
-
+METHODS
      __init__(self, game)
 
      **Purpose:**
@@ -253,8 +252,7 @@ An Analyzer object takes the results of a single game and computes various descr
 
 A Die object represents a stochastic object with a specified number of faces represented by unique symbols (str or numeric, e.g. "H" and "T" for a coin or 1, 2, 3, 4, 5, and 6 for an actual die), each with a weight representing its probability of being rolled. The object simulates a die (or coin, etc.) by randomly selecting from the faces a specified number of times and returning a list of results (e.g. ["H", "H", "T", "H", "T"] for a coin flipped 5x). The weights of the faces can be changed to create "unfair" dice.
 
-     Methods defined here:
-
+METHODS
      __init__(self, faces)
 
      **Purpose:**
@@ -305,8 +303,7 @@ A Die object represents a stochastic object with a specified number of faces rep
 
 Game object takes one or more dice (of the Die class) with the same number and names of faces and simulates rolling them.
 
-     Methods defined here:
-
+METHODS
      __init__(self, dice)
 
      **Purpose:**
