@@ -312,19 +312,19 @@ class Analyzer():
         Outputs:
         jackpots : int representing number of times all dice rolled the same face.
         '''
-        # Only do the calculation the first time
-        if self._jackpots == None:
+        # Return the result if it has already been constructed# 
+        if isinstance(self._jackpots, int): return self._jackpots
 
-            # Instantiate a counter
-            jackpots = 0
+        # Instantiate a counter
+        jackpots = 0
 
-            # Iterate over rows of the last_play data frame to see how many unique values
-            for value in self._game.get_last_play().nunique(axis = 1):
-                # When nunique = 1, that's a jackpot!
-                if value == 1: jackpots += 1
+        # Iterate over rows of the last_play data frame to see how many unique values
+        for value in self._game.get_last_play().nunique(axis = 1):
+            # When nunique = 1, that's a jackpot!
+            if value == 1: jackpots += 1
             
-            # Store state data
-            self._jackpots = jackpots
+        # Store state data
+        self._jackpots = jackpots
 
         return jackpots
     
