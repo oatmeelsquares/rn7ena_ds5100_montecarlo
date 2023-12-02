@@ -9,7 +9,7 @@ The package contains three (3) classes: Die, Game and Analyzer.
 
 
 ### install
-After cloning rn7ena_DS5100_montecarlo to your machine, navigate to the directory and run
+After cloning this repo to your machine, navigate into rn7ena_DS5100_montecarlo and run
 ```
 python setup.py install
 ```
@@ -21,16 +21,15 @@ for p in sys.path: print(p)    # python 3 - use print p for python 2
 ```
 
 
-
 ### import
-Since there is only one module, the __init__ file of the montecarlo package will also import the montecarlo module. Methods can then be called usind dot notation.
+Since there is only one module, the __init__ file of the montecarlo package will also import the montecarlo module. Methods can then be called using dot notation.
 
 ```
 import montecarlo
 montecarlo.montecarlo.Die(argument)
 ```
-In order to type less, it is recommended to instead import the module directly as `mc`:
 
+In order to type less, it is recommended to instead import the module directly as `mc`:
 ```
 from montecarlo import montecarlo as mc
 mc.Die(argument)
