@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sim import Die, Game
+from montecarlo import Die, Game, Analyzer
 import unittest
 
 
@@ -8,11 +8,15 @@ import unittest
 die = lambda : Die(np.array([1, 2, 3, 4, 5, 6]))
 coin = lambda : Die(np.array(["H", "T"]))
 
+# Some convenience initializer functions
+game1 = lambda : Game([die(), die(), die()])
+game2 = lambda : Game([coin(), coin(), coin(), coin(), coin()])
+
+
+
 ######################################################################################################################
 ###### Die Tests #####################################################################################################
 ######################################################################################################################
-
-
 
 class DieTester(unittest.TestCase):
     '''
@@ -181,12 +185,6 @@ class DieTester(unittest.TestCase):
 ###### Game Tests ####################################################################################################
 ######################################################################################################################
 
-# Some convenience initializer functions
-game1 = lambda : Game([die(), die(), die()])
-game2 = lambda : Game([coin(), coin(), coin(), coin(), coin()])
-
-
-
 class GameTester(unittest.TestCase):
 
     ########################
@@ -250,11 +248,15 @@ class GameTester(unittest.TestCase):
         '''Ensure Game instantiates with last_play = None'''
 
         # Initialize a Game object
-        g = game1()
+        g = game1()                     # 3 dice
 
         # Ensure last_play instantiates to None
         assert g.get_last_play() == None, "Game failed to initiate with last_play = None"
 
+
+    ########################
+    ## Tests for get_dice ##
+    ########################
 
     def test_get_dice1(self):
         '''
@@ -264,7 +266,7 @@ class GameTester(unittest.TestCase):
         '''
 
         # Instantiate a Game
-        g = game1()                 # game with 3 dice
+        g = game1()                 # 3 dice
 
         # Ensure get_dice returns a list of 3 dice
         assert len(g.get_dice()) == 3, "get_dice failed to return a list of appropriate length"
@@ -274,7 +276,7 @@ class GameTester(unittest.TestCase):
         '''Ensure that get_dice returns a list of the correct objects'''
 
         # Instantiate a Game object and a die object to work with
-        g = game1()                  # Game with 3 dice
+        g = game1()                  # 3 dice
 
         # Ensure the list contains the correct dice
         for d in g.get_dice():                                              # Iterate through the dice in the Game list
@@ -284,6 +286,47 @@ class GameTester(unittest.TestCase):
                 assert d.get_state().index[i] == i + 1, "get_dice returned the wrong list of objects"
                 # Weights should all be 1.0
                 assert d.get_state()["Weight"].iloc[i] == 1.0, "get_dice returned the wrong list of objects"
+
+
+
+    #############################
+    ## Tests for get_last_play ##
+    #############################
+
+    def test_get_last_play_type_error(self):
+        '''Ensure get_last_play raises TypeError when passed nonstring input'''
+
+        # Instantiate Game and last_play data frame
+        g = game1()
+        g.play(10)
+
+        # Try to get last play with bad input
+        try:
+            g.get_last_play(12)
+            # If the above works, this test should fail
+            assert 1 == 0, "get_last_play ran with integer input"
+
+        # Whe the above fails, it should raise TypeError
+        except Exception as t:
+            assert isinstance(t, TypeError), "get_last_play raised other than TypeError with integer input"
+
+    
+    def test_get_last_play_value_error(self):
+        '''Ensure get_last_play raises ValueError when passed invalid input'''
+
+        # Instantiate game and last_play data frame
+        g = game1()                             # 3 dice
+        g.play(10)
+
+        # Try to get last play with bad input
+        try:
+            g.get_last_play("column")
+            # If the above works, this test should fail
+            assert 1 == 0, "get_last_play worked with invalid string input"
+
+        # When the avobe fails, it should raise ValueError
+        except Exception as v:
+            assert isinstance(v, ValueError), "get_last_play raised other than ValueError when passed invalid string input"
 
 
     def test_get_last_play(self):
@@ -299,14 +342,63 @@ class GameTester(unittest.TestCase):
         assert isinstance(g.get_last_play(), pd.DataFrame), "get_last_play failed to return a pandas data frame"
 
         # Ensure data frame is correct shape
-        assert g.get_last_play().shape == (15, 5)
+        assert g.get_last_play().shape == (15, 5), "get_last_play returned a data frame of the wrong shape"
 
+    
+    def test_get_last_play_narrow1(self):
+        '''Ensure get_last_play returns a pandas data frame of correct shape with argument "narrow"'''
+
+        # Instantiate Game object
+        g = game2()                       # 5 coins
+
+        # Play game
+        g.play(10)                        # 10 rolls
+
+        # Get last play
+        n = g.get_last_play(format = "narrow")
+
+        # Ensure the returned object is a data frame
+        assert isinstance(n, pd.DataFrame), "get_last_play failed to return pandas data frame with argument 'narrow'"
+
+        # Ensure index is correct shape
+        assert len(n.index) == 50, "get_last_play('narrow') failed to multiindex"
+
+        # Ensure data frame is correct shape
+        assert n.shape == (50, 1), "get_last_play('narrow') returned a data frame of the wrong shape"
+
+    
+    def test_get_last_play_narrow2(self):
+        '''Ensure get_last_play returns a pandas data frame of correct shape with argument "n"'''
+
+        # Instantiate Game object
+        g = game2()                       # 5 coins
+
+        # Play game
+        g.play(10)                        # 10 rolls
+
+        # Get last play
+        n = g.get_last_play(format = "n")
+
+        # Ensure the returned object is a data frame
+        assert isinstance(n, pd.DataFrame), "get_last_play failed to return pandas data frame with argument 'n'"
+
+        # Ensure index is correct shape
+        assert len(n.index) == 50, "get_last_play('n') failed to multiindex"
+
+        # Ensure data frame is correct shape
+        assert n.shape == (50, 1), "get_last_play('n') returned a data frame of the wrong shape"
+
+
+
+    ####################
+    ## Tests for play ##
+    ####################
 
     def test_play_type_error(self):
         '''Ensure play raises TypeError when passed noninteger'''
 
         # Instantiate Game object
-        g = game1()
+        g = game1()                     # 3 dice
 
         # Try to play game with bad input
         try:
@@ -323,7 +415,7 @@ class GameTester(unittest.TestCase):
         '''Ensure play raises ValueError when passed times = 0'''
 
         # Instantiate Game object
-        g = game1()
+        g = game1()                         # 3 dice
 
         # Try to play game with bad input
         try:
@@ -340,7 +432,7 @@ class GameTester(unittest.TestCase):
         '''Ensure play raises ValueError when passed times < 0'''
 
         # Instantiate Game object
-        g = game1()
+        g = game1()                         # 3 dice
 
         # Try to play game with bad input
         try:
@@ -357,7 +449,7 @@ class GameTester(unittest.TestCase):
         '''Ensure play returns a pandas data frame'''
 
         # Instantiate Game object
-        g = game1()
+        g = game1()                         # 3 dice
 
         # Ensure play returns a pandas data frame
         assert isinstance(g.play(), pd.DataFrame), "play failed to return a pandas data frame"
@@ -398,8 +490,171 @@ class GameTester(unittest.TestCase):
 
 
 
+######################################################################################################################
+###### Analyzer Tests ################################################################################################
+######################################################################################################################
+
+class AnalyzerTest(unittest.TestCase):
+
+    ########################
+    ## Tests for __init__ ##
+    ########################
+
+    def test_init_value_error1(self):
+        '''Ensure __init__ raises ValueError when passed other than a Game object'''
+
+        # Try to initialize with bad input
+        try:
+            a = Analyzer("puppies")
+            # If the above works, this test should fail
+            assert 1 == 0, "__init__ ran with string input"
+
+        # When the above fails, it should raise ValueError
+        except Exception as v:
+            assert isinstance(v, ValueError), "__init__ raised other than ValueError when passed string input"
 
 
+    def test_init_value_error2(self):
+        '''Ensure __init__ raises ValueError when passed other than a Game object'''
+
+        # Try to initialize with bad input
+        try:
+            a = Analyzer(100)
+            # If the above works, this test should fail
+            assert 1 == 0, "__init__ ran with integer input"
+
+        # When the above fails, it should raise ValueError
+        except Exception as v:
+            assert isinstance(v, ValueError), "__init__ raised other than ValueError when passed integer input"
+
+
+    def test_init(self):
+        '''Ensure __init__ instantiates an Analyzer object with the correct Game object'''
+
+        # Initialize Analyzer object
+        a = Analyzer(game1())                        # 3 dice
+        g = a.get_game()
+
+        # Ensure the Analyzer has a Game object attribute
+        assert isinstance(g, Game), "Analyzer initiated without Game object"
+
+        # Ensure the Game has a list of three Die objects
+        dice = g.get_dice()
+
+        assert len(dice) == 3, "Analyzer initiated with the wrong list of dice"
+
+        for d in dice:
+            assert isinstance(d, Die), "Analyser initiated with other than Die objects in Game"
+
+
+    #######################
+    ## Tests for jackpot ##
+    #######################
+
+    def test_jackpot0(self):
+        '''Ensure jackpot returns an integer equal to the number of jackpots'''
+
+        # We will have to construct a fake last play here
+        g = game1()                     # 3 dice
+        g._last_play = pd.DataFrame([[2, 3, 4, 1, 4],        # 0 jackpots
+                                     [3, 2, 4, 5, 3],
+                                     [3, 3, 3, 4, 5]
+                                     ])
+        
+        # Make sure jackpot == 2
+        assert Analyzer(g).jackpot() == 0, "jackpot failed to return zero when there were no jackpots"
+
+
+    def test_jackpot1(self):
+        '''Ensure jackpot returns an integer equal to the number of jackpots'''
+
+        # We will have to construct a fake last play here
+        g = game1()                     # 3 dice
+        g._last_play = pd.DataFrame([[1, 2, 3],
+                                     [4, 5, 6],
+                                     [3, 3, 3],
+                                     [6, 4, 2],
+                                     [4, 4, 4]])        # 2 jackpots
+        
+        # Make sure jackpot == 2
+        assert Analyzer(g).jackpot() == 2, "jackpot failed to return the correct number"
+
+
+    ###########################
+    ## Tests for face_counts ##
+    ###########################
+
+    def test_face_counts    (self):
+        '''Ensure that face_counts returns a data frame with proper shape and values'''
+
+        # Initialize Analyzer object to work with
+        g = game1()                     # 3 dice
+        g.play(10)                      # 10 rolls
+        a = Analyzer(g)
+
+        # face_counts should return a data frame of shape (10, 6): 10 rolls, 6 faces
+        assert a.face_counts().shape == (10, 6), "face_counts returned a data frame of the wrong shape"
+        
+        # Each row should add up to 3 (3 dice rolled therefore 3 faces to count)
+        for sum in a.face_counts().sum(axis = 1):
+            assert sum == 3, "face_counts returned inappropriate values"
+
+
+    ############################
+    ## Tests for combo_counts ##
+    ############################
+
+    def tests_combo_counts(self):
+        '''Ensure combo_counts returns a data frame with appropriate results'''
+        g = game1()                 # 3 dice
+        g.play(100)                 # 100 rolls
+
+        a = Analyzer(g)
+
+        assert isinstance(a.combo_counts(), pd.DataFrame), "combo_counts failed to return a pandas data frame"
+
+        counts_local = a.combo_counts()["Counts"]
+
+        # Counts should add up to 100
+        assert sum(counts_local) == 100, "combo_counts failed to report the correct number of results"
+
+        # Length should be <=32 because there are only 56 combinations of 3 numbers 1-6
+        assert len(counts_local) <= 56, "combo_counts failed to consolidate unique permutations"
+      
+
+
+
+    ###########################
+    ## Tests for perm_counts ##
+    ###########################
+
+    def text_perm_counts(self):
+        '''Ensure perm_counts returns a data frame with appropriate results'''
+        g = game2()                 # 5 coins
+        g.play(40)                  # 40 rolls
+
+        a = Analyzer(g)
+
+        assert isinstance(a.perm_counts(), pd.DataFrame), "perm_counts failed to return a pandas data frame"
+
+        counts_local = a.perm_counts()["Counts"]
+
+        # Counts should add up to 40
+        assert sum(counts_local) == 40, "perm_counts failed to report the correct number of results"
+
+        # Length should be <=32 because there are only 32 permutations of 5 "H" and "T"
+        assert len(counts_local) <= 32, "perm_counts failed to consolidate unique permutations"
+
+    def test_compare_combos_perms(self):
+        '''Ensure combo_counts returns <= the amount of rows as perm_counts'''
+
+        g = game1()                 # 3 dice
+        g.play(50)                  # 50 rolls
+
+        a = Analyzer(g)
+
+        # There should never be more combinations than permutations
+        assert len(a.combo_counts()) <= len(a.perm_counts()), "more combos than perms"
 
 
 

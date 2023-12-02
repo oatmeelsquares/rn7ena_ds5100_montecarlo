@@ -10,7 +10,7 @@ import pandas as pd
 
 class Die:
     '''
-    Die class represents a stochastic object with a specified number of faces represented by unique symbols (str or numeric,
+    A Die object represents a stochastic object with a specified number of faces represented by unique symbols (str or numeric,
     e.g. "H" and "T" for a coin or 1, 2, 3, 4, 5, and 6 for an actual die), each with a weight representing its probability
     of being rolled.
 
@@ -126,14 +126,14 @@ class Die:
 
 class Game():
     '''
-    Game class represents rolling one or more dice (of the Die class) with the same number and names of faces.  
+    Game object takes one or more dice (of the Die class) with the same number and names of faces and simulates rolling them.  
     '''
 
 
     def __init__(self, dice):
         '''
         Purpose:
-        Instantiates a Game object with a given list of dice.
+        Initializes a Game object with a given list of dice.
 
         Inputs:
         dice : list of Die objects with the same number and labels of faces.
@@ -170,9 +170,7 @@ class Game():
         Safely retrieve list of Die objects stored in the Game.
 
         Inputs:
-        format : string "wide" or "narrow" to desribe the shape of the dataframe returned.
-                 "wide" will return the dataframe with row indexes representing # of the roll and columns representing # of the Die.
-                 "narrow" will return the dataframe multi-indexed with level 1
+        None.
 
         Outputs:
         dice : list of Die objects that the Gmae was instantiated with
@@ -187,13 +185,29 @@ class Game():
         Safely retrieve information on the last game played.
 
         Inputs:
-        None.
+        format : string "wide" or "narrow" to desribe the shape of the dataframe returned.
+                 "wide" or "w" will return the dataframe with row indexes representing Roll # and columns representing Die #.
+                 "narrow" or "n" will return the dataframe multi-indexed with level 1 representing Roll # and level 2 representing Die #.
 
         Outputs:
-        last_play : pandas dataframe with results from the last game.        
+        last_play : pandas dataframe with results from the last game, in wide or narrow format as specified. Defaults to wide.    
         '''
 
-        return self._last_play
+        if not isinstance(format, str):
+            raise TypeError("Argument must be a string")
+
+        inputs = ["narrow", "n", "wide", "w"]
+
+        if format not in inputs:
+            raise ValueError("Argument must be string 'narrow' or 'wide'")
+
+        df = self._last_play
+
+        if format == "narrow" or format == "n":
+            df = pd.DataFrame(df.stack())
+            df.columns = ["Result"]
+
+        return df
 
 
     def play(self, times=1):
@@ -235,37 +249,192 @@ class Game():
 
 
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
+######################################################################################################################
+###### Analyzer ######################################################################################################
 ######################################################################################################################
 
+class Analyzer():
+    '''
+    An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
+    '''
 
-if __name__ == "__main__":
-    a = np.array(["H", "T"])
-    print(a)
+    def __init__(self, game):
+        '''
+        Purpose:
+        Initializes Analyzer object with a given game.
 
-    c = Die(a)
+        Inputs:
+        game : Game object to be analyzed.
 
-    g = Game([c])
+        Outputs:
+        Analyzer object with the given Game.        
+        '''
 
-    print("State:", g.get_dice()[0].get_state())
-    print("Play:")
-    print(g.play(5))
+        # Raise ValueError if argument is not a Game object
+        if not isinstance(game, Game):
+            raise ValueError("Anlyzer must be initialized with a Game object")
+        
+        # Save state data
+        self._game = game
+        self._jackpots = None
+        self._face_counts = None
+        self._combos = None
+        self._perms = None
+
+
+    def get_game(self):
+        '''
+        Purpose:
+        Safely retrieve a copy of the Game object that the Analyzer was initialized with.
+
+        Inputs:
+        None.
+
+        Outputs:
+        Game object the Analyzer was initialized with.        
+        '''
+
+        return self._game
     
-    df = g.play(100000)
-    df.to_csv("~/School/MSDS/DS5100/h-t.csv")
 
+    def jackpot(self):
+        '''
+        Purpose:
+        Computes the number of times all Die objects 'rolled' the same face in a single roll, returning an integer value.
+
+        Inputs:
+        None.
+
+        Outputs:
+        jackpots : int representing number of times all dice rolled the same face.
+        '''
+        # Only do the calculation the first time
+        if self._jackpots == None:
+
+            # Instantiate a counter
+            jackpots = 0
+
+            # Iterate over rows of the last_play data frame to see how many unique values
+            for value in self._game.get_last_play().nunique(axis = 1):
+                # When nunique = 1, that's a jackpot!
+                if value == 1: jackpots += 1
+            
+            # Store state data
+            self._jackpots = jackpots
+
+        return jackpots
+    
+
+    def face_counts(self):
+        '''
+        Purpose:
+        Computes how many times each face is rolled for each roll in a game, returning a data frame describing the faces rolled
+        in the Game.
+        
+        Inputs:
+        None.
+        
+        Outputs:
+        face_counts : pandas DataFrame describing the faces rolled in the Game, with index Roll # and face values as columns.
+        '''
+        # Return the result if it has already been constructed
+        if isinstance(self._face_counts, pd.DataFrame): return self._face_counts
+
+        # Get the results from the Game to work with
+        g = self._game.get_last_play()
+
+        # Construct data frame from value counts for each row (Roll #)
+        counts = pd.DataFrame([g.loc[i].value_counts() for i in range(1, len(g.index) + 1)])
+
+        # Clean up NaN's and convert to int
+        counts = counts.fillna(value = 0).astype(np.int8)
+
+        # Store the result
+        self._face_counts = counts
+                          
+        return self._face_counts
+    
+
+    def combo_counts(self):
+        '''
+        Purpose:
+        Computes distinct combinations (regardless of order) of faces rolled and reports them along with their counts in a pandas data frame.
+        Distinct combinations are described in a Multiindex with a single column of counts.
+        
+        Inputs:
+        None.
+        
+        Outputs:
+        combos : pandas data frame of all distinct combinations and their counts.
+        '''
+
+        # Retreive results if it has already ben calculated
+        if isinstance(self._combos, pd.DataFrame): return self._combos
+        
+        # Get the results from the game to work with sorted so that order doesn't matter
+        g = np.sort(self._game.get_last_play().to_numpy(), axis = 1)
+
+        # Standardize order of results (sort along axis 1) and store in hashable tuples      
+        results = [tuple(result) for result in g]
+
+        # Construct dictionary of result : count pairs
+        d = {}
+
+        for result in results:
+            
+            # If not in d, add with count 1
+            if result not in d:
+                d[result] = 1
+
+            # Else increment the count
+            else:
+                d[result] += 1
+
+        # Store the dictionary as a multiindexed data frame
+        self._combos = pd.DataFrame(d.values(), index = d.keys(), columns = ["Counts"])
+
+        return self._combos
+
+
+        # Multiindex includes faces and counts
+
+
+    def perm_counts(self):
+        '''
+        Purpose: Computes the distinct (ordered) permutations of faces rolled and reports them along with their counts in a
+        pandas data frame. Distinct combinations are described in a multiindex with a single column of counts.
+
+        Inputs:
+        None.
+
+        Outputs:
+        perms : pandas data frame of all distinct permutations and their counts.
+        '''
+
+        # Retrieve result if it has already been calculated
+        if isinstance(self._perms, pd.DataFrame): return self._perms
+
+        # Get results as a list of hashable tuples
+        g = self._game.get_last_play().to_numpy()
+        results = [tuple(result) for result in g]
+
+        # Construct dictionary of result : count pairs
+        d = {}
+
+        for result in results:
+            
+            # If not in d, add with count 1
+            if result not in d:
+                d[result] = 1
+
+            # Else increment the count
+            else:
+                d[result] += 1
+
+        # Store the dictionary as a multiindexed data frame
+        self._perms = pd.DataFrame(d.values(), index = d.keys(), columns = ["Counts"])
+
+        return self._perms
 
 
 
