@@ -180,9 +180,10 @@ CLASSES
 An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
 
 METHODS
-     __init__(self, game)
 
-     **Purpose:**
+`__init__(self, game)
+
+__Purpose:__
      Initializes Analyzer object with a given game.
 
      **Inputs:**
