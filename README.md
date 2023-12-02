@@ -166,8 +166,6 @@ print("\nPermutations: \n", a.perm_counts(), sep ="")
 ```
 
 ## API description
-Help on module montecarlo.montecarlo in montecarlo:
-
 NAME
     montecarlo.montecarlo
 
@@ -177,181 +175,164 @@ CLASSES
         Die
         Game
     
-    class Analyzer(builtins.object)
-     |  Analyzer(game)
-     |  
-     |  An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self, game)
-     |      Purpose:
-     |      Initializes Analyzer object with a given game.
-     |      
-     |      Inputs:
-     |      game : Game object to be analyzed.
-     |      
-     |      Outputs:
-     |      Analyzer object with the given Game.
-     |  
-     |  combo_counts(self)
-     |      Purpose:
-     |      Computes distinct combinations (regardless of order) of faces rolled and reports them along with their counts in a pandas data frame.
-     |      Distinct combinations are described in a Multiindex with a single column of counts.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      combos : pandas data frame of all distinct combinations and their counts.
-     |  
-     |  face_counts(self)
-     |      Purpose:
-     |      Computes how many times each face is rolled for each roll in a game, returning a data frame describing the faces rolled
-     |      in the Game.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      face_counts : pandas DataFrame describing the faces rolled in the Game, with index Roll # and face values as columns.
-     |  
-     |  get_game(self)
-     |      Purpose:
-     |      Safely retrieve a copy of the Game object that the Analyzer was initialized with.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      Game object the Analyzer was initialized with.
-     |  
-     |  jackpot(self)
-     |      Purpose:
-     |      Computes the number of times all Die objects 'rolled' the same face in a single roll, returning an integer value.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      jackpots : int representing number of times all dice rolled the same face.
-     |  
-     |  perm_counts(self)
-     |      Purpose: Computes the distinct (ordered) permutations of faces rolled and reports them along with their counts in a
-     |      pandas data frame. Distinct combinations are described in a multiindex with a single column of counts.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      perms : pandas data frame of all distinct permutations and their counts.
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors defined here:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
+### class Analyzer(builtins.object)
+
+An Analyzer object takes the results of a single game and computes various descriptive statistical properties about it.
+
+     Methods defined here:
+
+     __init__(self, game)
+
+     **Purpose:**
+     Initializes Analyzer object with a given game.
+
+     **Inputs:**
+     game : Game object to be analyzed.
+
+     **Outputs:**
+     Analyzer object with the given Game.
+
+     combo_counts(self)
+
+     **Purpose:**
+     Computes distinct combinations (regardless of order) of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a Multiindex with a single column of counts.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     combos : pandas data frame of all distinct combinations and their counts.
+
+     face_counts(self)
+
+     **Purpose:**
+     Computes how many times each face is rolled for each roll in a game, returning a data frame describing the faces rolled in the Game.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     face_counts : pandas DataFrame describing the faces rolled in the Game, with index Roll # and face values as columns.
+
+     get_game(self)
+
+     **Purpose:**
+     Safely retrieve a copy of the Game object that the Analyzer was initialized with.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     Game object the Analyzer was initialized with.
+
+     jackpot(self)
+
+     **Purpose:**
+     Computes the number of times all Die objects 'rolled' the same face in a single roll, returning an integer value.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     jackpots : int representing number of times all dice rolled the same face.
+
+     perm_counts(self)
+
+     **Purpose:**
+     Computes the distinct (ordered) permutations of faces rolled and reports them along with their counts in a pandas data frame. Distinct combinations are described in a multiindex with a single column of counts.
+     
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     perms : pandas data frame of all distinct permutations and their counts.
+
+
     
-    class Die(builtins.object)
-     |  Die(faces)
-     |  
-     |  A Die object represents a stochastic object with a specified number of faces represented by unique symbols (str or numeric,
-     |  e.g. "H" and "T" for a coin or 1, 2, 3, 4, 5, and 6 for an actual die), each with a weight representing its probability
-     |  of being rolled.
-     |  
-     |  The object simulates a die (or coin, etc.) by randomly selecting from the faces a specified number of times and returning
-     |  a list of results (e.g. ["H", "H", "T", "H", "T"] for a coin flipped 5x).
-     |  
-     |  The weights of the faces can be changed to create "unfair" dice.
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self, faces)
-     |      Purpose:
-     |      Initializes Die object with a specified number of sides (which can represent a coin (2 sides),
-     |      an actual die (6 sides), etc.).
-     |      
-     |      Inputs:
-     |      faces : numpy array with distinct values representing each face (e.g. array(["Heads", "Tails"])
-     |              for a coin.)
-     |      
-     |      Outputs:
-     |      Die object with given number of sides and equal weights of 1.0 (a fair coin, die, etc.).
-     |  
-     |  change_weight(self, face, new_weight)
-     |      Purpose:
-     |      Allows the user to change the weight of a given face to make the die "unfair".
-     |      
-     |      Inputs:
-     |      face       : str or numeric representation of one of the faces
-     |      new_weight : new weight for that side (e.g. new_weight = 5 would make that face 5x more likely to be rolled
-     |                   if no other faces were changed)
-     |      
-     |      Outputs:
-     |      None (in-place change of Die object's state attribute)
-     |  
-     |  get_state(self)
-     |      Purpose:
-     |      Safely access the state object of the Die, which holds the names and weights of each face in a pandas data frame.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      state: pandas data frame with names and weights of each face of the Die object.
-     |  
-     |  roll(self, times=1)
-     |      Purpose:
-     |      Simulates rolling the die a given number of times, returning a list of outcomes of the rolls.
-     |      
-     |      Inputs:
-     |      times : int number of rolls to be recorded
-     |      
-     |      Outputs:
-     |      outcomes : list of length(times) of the results of the rolls
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors defined here:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
+### class Die(builtins.object)
+
+A Die object represents a stochastic object with a specified number of faces represented by unique symbols (str or numeric, e.g. "H" and "T" for a coin or 1, 2, 3, 4, 5, and 6 for an actual die), each with a weight representing its probability of being rolled. The object simulates a die (or coin, etc.) by randomly selecting from the faces a specified number of times and returning a list of results (e.g. ["H", "H", "T", "H", "T"] for a coin flipped 5x). The weights of the faces can be changed to create "unfair" dice.
+
+     Methods defined here:
+
+     __init__(self, faces)
+
+     **Purpose:**
+     Initializes Die object with a specified number of sides (which can represent a coin (2 sides), an actual die (6 sides), etc.).
+
+     **Inputs:**
+     faces : numpy array with distinct values representing each face (e.g. array(["Heads", "Tails"]) for a coin.)
+
+     **Outputs:**
+     Die object with given number of sides and equal weights of 1.0 (a fair coin, die, etc.).
+
+     change_weight(self, face, new_weight)
+
+     **Purpose:**
+     Allows the user to change the weight of a given face to make the die "unfair".
+
+     **Inputs:**
+     face       : str or numeric representation of one of the faces
+     new_weight : new weight for that side (e.g. new_weight = 5 would make that face 5x more likely to be rolled if no other faces were changed)
+
+     **Outputs:**
+     None (in-place change of Die object's state attribute)
+
+     get_state(self)
+
+     **Purpose:**
+     Safely access the state object of the Die, which holds the names and weights of each face in a pandas data frame.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     state: pandas data frame with names and weights of each face of the Die object.
+
+     roll(self, times=1)
+
+     **Purpose:**
+     Simulates rolling the die a given number of times, returning a list of outcomes of the rolls.
+
+     **Inputs:**
+     times : int number of rolls to be recorded
+
+     **Outputs:**
+     outcomes : list of length(times) of the results of the rolls
+
     
-    class Game(builtins.object)
-     |  Game(dice)
-     |  
-     |  Game object takes one or more dice (of the Die class) with the same number and names of faces and simulates rolling them.
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self, dice)
-     |      Purpose:
-     |      Initializes a Game object with a given list of dice.
-     |      
-     |      Inputs:
-     |      dice : list of Die objects with the same number and labels of faces.
-     |      
-     |      Outputs:
-     |      Game object with the given dice.
-     |  
-     |  get_dice(self)
-     |      Purpose:
-     |      Safely retrieve list of Die objects stored in the Game.
-     |      
-     |      Inputs:
-     |      None.
-     |      
-     |      Outputs:
-     |      dice : list of Die objects that the Gmae was instantiated with
-     |  
-     |  get_last_play(self, format='wide')
-     |      Purpose:
-     |      Safely retrieve information on the last game played.
+### class Game(builtins.object)
+
+Game object takes one or more dice (of the Die class) with the same number and names of faces and simulates rolling them.
+
+     Methods defined here:
+
+     __init__(self, dice)
+
+     **Purpose:**
+     Initializes a Game object with a given list of dice.
+
+     **Inputs:**
+     dice : list of Die objects with the same number and labels of faces.
+
+     **Outputs:**
+     Game object with the given dice.
+
+     get_dice(self)
+     
+     **Purpose:**
+     Safely retrieve list of Die objects stored in the Game.
+
+     **Inputs:**
+     None.
+
+     **Outputs:**
+     dice : list of Die objects that the Gmae was instantiated with
+
+     get_last_play(self, format='wide')
+
+     **Purpose:**
+     Safely retrieve information on the last game played.
      
      **Inputs:**
      format : string "wide" or "narrow" to desribe the shape of the dataframe returned. "wide" or "w" will return the dataframe with row indexes representing Roll # and columns representing Die #. "narrow" or "n" will return the dataframe multi-indexed with level 1 representing Roll # and level 2 representing Die #.
