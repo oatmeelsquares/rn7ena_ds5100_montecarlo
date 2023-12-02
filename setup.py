@@ -6,7 +6,6 @@ setup(
 	description = "DS5100 Final project",
 	url = "https://github.com/oatmeelsquares/rn7ena_ds5100_montecarlo",
 	author = "Becky Desrosiers",
-	description = "README.md",
 	license = "LICENSE.txt",
 	long_description = "README.md",
 	packages = ["montecarlo"],
