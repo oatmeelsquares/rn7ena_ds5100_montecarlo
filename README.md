@@ -135,12 +135,13 @@ print(a.get_game().get_last_play())
 The Analyzer will tell you how many times you hit the jackpot (rolled all of the same faces in a single roll), how many times each face was rolled in each roll, and how many distinct combinations and permutations were rolled along with their counts.
 ```
 print("Jackpots:", a.jackpot(), sep ="")
-print("Face counts: \n", a.face_counts(), sep ="")
-print("Combos: \n", a.combo_counts(), sep ="")
-print("Permutations: \n", a.perm_counts(), sep ="")
+print("\nFace counts: \n", a.face_counts(), sep ="")
+print("\nCombos: \n", a.combo_counts(), sep ="")
+print("\nPermutations: \n", a.perm_counts(), sep ="")
 
 ## Output
 ## Jackpots: 2
+##
 ## Face counts:
 ##    T  H
 ## 1  3  0
@@ -148,18 +149,21 @@ print("Permutations: \n", a.perm_counts(), sep ="")
 ## 3  1  2
 ## 4  0  3
 ## 5  1  2
+##
 ## Combos:
 ##        Counts
 ## T T T       1
 ## H T T       1
 ##   H T       2
 ##     H       1
+##
 ## Permutations:
 ##        Counts
 ## T T T       1
 ##     H       1
 ## H H T       2
 ##     H       1
+```
 
-
-
+## API description
+see monte_help.txt
