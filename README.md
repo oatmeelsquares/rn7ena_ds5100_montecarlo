@@ -31,7 +31,7 @@ The package is now available for your use in python.
 
 
 ### import
-Since there is only one module, the __init__ file of the montecarlo package will also import the montecarlo module. Methods can then be called using dot notation.
+Since there is only one module, the \__init__ file of the montecarlo package will also import the montecarlo module. Methods can then be called using dot notation.
 
 ```
 import montecarlo
