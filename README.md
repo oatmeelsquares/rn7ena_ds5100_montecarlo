@@ -7,11 +7,16 @@ Project title: Monte Carlo Simulator
 ## Synopsis
 
 ### install
-It is recommended to clone this repo into a directory in sys.path. To checkc which directories are in sys.path, run the following python code:
+If you want the module to be accessable from outside of its won directory, it will need to be installed. It is recommended to clone this repo into a directory in sys.path. To check which directories are in sys.path, run the following python code:
 ```
 import sys
 for p in sys.path: print(p)    # or print p for python 2
 ```
+For your convenience, copy the following code to clone your repo using SSH key:
+```
+git clone git@github.com:oatmeelsquares/rn7ena_ds5100_montecarlo.git
+```
+If you find you do not have permission, you may need to fork this repo first and then use your own key.
 
 After cloning this repo to your machine, navigate into rn7ena_DS5100_montecarlo and run
 ```
@@ -26,7 +31,7 @@ The package is now available for your use in python.
 
 
 ### import
-Since there is only one module, the __init__ file of the montecarlo package will also import the montecarlo module. Methods can then be called using dot notation.
+Since there is only one module, the `__init__` file of the montecarlo package will also import the montecarlo module. Methods can then be called using dot notation.
 
 ```
 import montecarlo

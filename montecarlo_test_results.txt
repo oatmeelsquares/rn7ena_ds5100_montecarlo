@@ -1,0 +1,74 @@
+test_compare_combos_perms (__main__.AnalyzerTest)
+Ensure combo_counts returns <= the amount of rows as perm_counts ... ok
+test_face_counts (__main__.AnalyzerTest)
+Ensure that face_counts returns a data frame with proper shape and values ... ok
+test_init (__main__.AnalyzerTest)
+Ensure __init__ instantiates an Analyzer object with the correct Game object ... ok
+test_init_value_error1 (__main__.AnalyzerTest)
+Ensure __init__ raises ValueError when passed other than a Game object ... ok
+test_init_value_error2 (__main__.AnalyzerTest)
+Ensure __init__ raises ValueError when passed other than a Game object ... ok
+test_jackpot0 (__main__.AnalyzerTest)
+Ensure jackpot returns an integer equal to the number of jackpots ... ok
+test_jackpot1 (__main__.AnalyzerTest)
+Ensure jackpot returns an integer equal to the number of jackpots ... ok
+tests_combo_counts (__main__.AnalyzerTest)
+Ensure combo_counts returns a data frame with appropriate results ... ok
+test_change_weight (__main__.DieTester)
+Ensure change_weight actually changes the weight ... ok
+test_change_weight_index_error (__main__.DieTester)
+Ensure change_weight raises IndexError if the given face is not in the Die ... ok
+test_change_weight_type_error (__main__.DieTester)
+Ensure change_weight raises TypeError if weight cannot be interpreted as numeric ... ok
+test_get_state (__main__.DieTester)
+Ensure get_state returns a dataframe of proper shape ... ok
+test_init (__main__.DieTester)
+Ensure initialized object has correct state DataFrame ... ok
+test_init_type_error (__main__.DieTester)
+Ensure __init__ raises TypeError when the argument is not a numpy array ... ok
+test_init_value_error (__main__.DieTester)
+Ensure __init__ raises ValueError when the array contains dupicate values ... ok
+test_roll (__main__.DieTester)
+Ensure roll returns a list of length(times) ... ok
+test_roll_type_error (__main__.DieTester)
+Ensure roll raises TypeError if passed non-integer argument ... ok
+test_get_dice1 (__main__.GameTester) ... ok
+test_get_dice2 (__main__.GameTester)
+Ensure that get_dice returns a list of the correct objects ... ok
+test_get_last_play (__main__.GameTester)
+Ensure get_last_play returns a pandas data frame of correct shape ... ok
+test_get_last_play_narrow1 (__main__.GameTester)
+Ensure get_last_play returns a pandas data frame of correct shape with argument "narrow" ... ok
+test_get_last_play_narrow2 (__main__.GameTester)
+Ensure get_last_play returns a pandas data frame of correct shape with argument "n" ... ok
+test_get_last_play_type_error (__main__.GameTester)
+Ensure get_last_play raises TypeError when passed nonstring input ... ok
+test_get_last_play_value_error (__main__.GameTester)
+Ensure get_last_play raises ValueError when passed invalid input ... ok
+test_init1 (__main__.GameTester)
+Ensure init instantiates a Game object ... ok
+test_init2 (__main__.GameTester)
+Ensure Game instantiates with last_play = None ... ok
+test_init_type_error1 (__main__.GameTester)
+Ensure a Game object raises TypeError when passed not a list ... ok
+test_init_type_error2 (__main__.GameTester)
+Ensure a Game object raises TypeError when passed a list not full of Die objects ... ok
+test_init_value_error (__main__.GameTester)
+Ensure a Game object raises ValueError when passed a list of dissimilar Die objects ... ok
+test_play_df (__main__.GameTester)
+Ensure play returns a pandas data frame ... ok
+test_play_results1 (__main__.GameTester)
+Ensure play returns appropriate results ... ok
+test_play_results2 (__main__.GameTester)
+Ensure play returns appropriate results again ... ok
+test_play_type_error (__main__.GameTester)
+Ensure play raises TypeError when passed noninteger ... ok
+test_play_value_error0 (__main__.GameTester)
+Ensure play raises ValueError when passed times = 0 ... ok
+test_play_value_error1 (__main__.GameTester)
+Ensure play raises ValueError when passed times < 0 ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.078s
+
+OK
