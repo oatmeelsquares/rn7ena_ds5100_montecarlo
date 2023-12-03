@@ -20,9 +20,12 @@ If you find you do not have permission, you may need to fork this repo first and
 
 After cloning this repo to your machine, navigate into rn7ena_DS5100_montecarlo and run
 ```
+pip install .
+```
+You can also use
+```
 python setup.py install
 ```
-
 The package is now available for your use in python.
 
 
