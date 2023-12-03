@@ -7,7 +7,7 @@ Project title: Monte Carlo Simulator
 ## Synopsis
 
 ### install
-If you want the module to be accessable from outside of its won directory, it will need to be installed. It is recommended to clone this repo into a directory in sys.path. To check which directories are in sys.path, run the following python code:
+If you want the module to be accessable from outside of its own directory, it will need to be installed. It is recommended to clone this repo into a directory in sys.path. To check which directories are in sys.path, run the following python code:
 ```
 import sys
 for p in sys.path: print(p)    # or print p for python 2
