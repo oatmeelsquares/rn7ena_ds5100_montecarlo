@@ -9,5 +9,5 @@ setup(
 	license = "LICENSE.txt",
 	long_description = "README.md",
 	packages = ["montecarlo"],
-	install_requires = ["numpy >= 1.11.1", "pandas >= 2.1"],
+	install_requires = ["numpy >= 1.11.1", "pandas >= 1.0"],
 )
